@@ -118,5 +118,44 @@ Passenger* getPassengerById(int id){
 		fclose(fp);
 		return NULL;
 	}
+
+	while (fread(passenger, sizeof(Passenger), 1, fp))
+	{
+		if (passenger->id ==id)
+		{
+			fclode(fp);
+			return passenger;
+
+		}
+		
+	}
+	fclose(fp);
+	free(passenger);
+	return NULL;
+}
+
+void generateBoardingPass() {
+	int id;
+	printf("\n--- Boarding Pass Generator ---\n");
+	printf("Enter Passenger ID for boarding pass: ");
+	scanf("%d", &id);
+	getchar();
+
+
+	Passenger *passengerPtr = getPassengerById(id);
+	if (passengerPtr != NULL){
+		printf("BOARDING PASS\n");
+		printf("Passenger Id: %d\n", passengerPtr->id);
+		printf("Name: %s\n", passengerPtr->name);
+		printf("Flight No: %s\n", passengerPtr->flight);
+		printf("Nationality: %s\n", passengerPtr->nationality);
+		printf("Origin: %s\n", passengerPtr->departure);
+		printf("Destination: %s\n", passengerPtr->arrival);
+		printf("Seat: %s\n",passengerPtr->seat);
+		free(passengerPtr);
+	} else {
+		printf("passenger with ID %d Not found.\n", id);
+	}
 	
+	return 1;
 }
