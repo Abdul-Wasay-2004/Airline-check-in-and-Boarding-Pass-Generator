@@ -1,63 +1,21 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#define FILE_NAME "passengers.dat"
 
-typedef struct 
-{
-int id;
-char name[50];
-char flight[20];
-char nationality[50];
-char departure[50];
-char arrival[50];
-char seat[10];
-} Passenger;
+struct passenger{
+	int id;
+	char name[50];
+	char flight[10];
+	char nationality[20];
+	char departure[20];
+	char arrival[20];
+	char seat[10];
+};
 
-void checkInPassenger();
-void generateBoardingPass();
-Passenger* getPassengerById(int id);
+void checkInPassenger(void);
+void generateBoardingPass(void);
+struct passenger *getPassengerById(int id);
 
-int main(){
-	int choice;
-	while (1)
-	{
-		printf("Airline Check-in & Boarding Pass Generator\n");
-		printf("1. Passenger Check-in\n");
-		printf("2. Generate Boarding Pass\n");
-		printf("3. Exit\n");
-		printf("Enter your choice: ");
-		if (scanf("%d", &choice) != 1)
-		{
-			while (getchar() != '\n');
-			printf("Invalid Input. Please enter a number.\n");
-			continue;
-		}
-		getchar();
-
-		switch (choice)
-		{
-		case 1:
-		checkInPassenger()
-		break;
-		
-		case 2:
-		generateBoardingPass();
-		break;
-
-		case 3:
-		printf("Exiting program\n");
-		break;
-
-		default:
-		printf("invalid choice. Please try again.\n");
-			
-		}
-		
-	}
-	return 0;
-
-}
 void checkInPassenger(){
 
 	Passenger passenger;
@@ -158,4 +116,36 @@ void generateBoardingPass() {
 	}
 	
 	return 1;
+}
+
+int main(){
+	int choice;
+	while(1){
+		printf("\nAirline Check-in. Welcome\n");
+		printf("1. Passenger Check-in\n");
+		printf("2. Generate Boarding Pass\n");
+		printf("3. Exit\n");
+		printf("Enter your choice: ");
+		if(scanf("%d", &choice) != 1){
+			while(getchar()!='\n');
+			printf("Invalid input. Please enter a number 1-3\n");
+			continue;
+		}
+		getchar();
+
+		switch(choice){
+			case 1:
+				checkInPassenger();
+				break;
+			case 2:
+				generateBoardingPass();
+				break;
+			case 3:
+				printf("Exiting Program\n");
+				exit(0);
+			default:
+				printf("Invalid input. Please enter a number 1-3\n");
+		}
+	}
+	return 0;
 }
