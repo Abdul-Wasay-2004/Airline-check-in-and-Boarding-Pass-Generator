@@ -1,6 +1,4 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-int main(){
-	printf("kaam shuru karo");
-}
+#define FILE_NAME "passengers.dat"
