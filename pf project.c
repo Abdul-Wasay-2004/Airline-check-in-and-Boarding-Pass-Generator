@@ -38,8 +38,8 @@ int main(){
 		switch (choice)
 		{
 		case 1:
-			checkInPassenger()
-			break;
+		checkInPassenger()
+		break;
 		
 		case 2:
 		generateBoardingPass();
@@ -90,4 +90,33 @@ void checkInPassenger(){
 	printf("Enter Seat Number: ");
 	fgets(passenger.seat, sizeof(passenger.seat), stdin);
 	passenger.seat[strcspn(passenger.seat, "\n")] = 0;
+
+	File *fp = fopen(FILE_NAME, "ab");
+	if (fp == Null) {
+		perror("unable to open file for writing");
+		return;
+	}
+	if (fwrite(&passenger, sizeof(Passenger), 1, fp)!= 1){
+		perror("Error writing passenger recoed");
+	}else{
+		printf("passenger checked in successfully. Details saved to file.\n");
+
+	}
+	fclose(fp);
+
+}
+Passenger* getPassengerById(int id){
+	FILE *fp =fopen(FILE_NAME, "rb");
+	if(fp == NULL){
+		perror("unable to open file for reading");
+		return NULL;
+	}
+
+	Passenger *passenger = malloc(sizeof(passenger));
+	if (passenger ==NULL){
+		perror("Memory Aloocated failed");
+		fclose(fp);
+		return NULL;
+	}
+	
 }
