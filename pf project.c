@@ -51,7 +51,7 @@ int main(){
 
 		default:
 		printf("invalid choice. Please try again.\n");
-			break;
+			
 		}
 		
 	}
@@ -69,5 +69,25 @@ void checkInPassenger(){
 
 	printf("Enter Passenger Name: ");
 	fgets(passenger.name, sizeof(passenger.name), stdin);
-	passenger.name[strcspn]
+	passenger.name[strcspn(passenger.name, "\n")] = 0;
+
+	printf("Enter Flight Number: ");
+	fgets(passenger.flight, sizeof(passenger.flight), stdin);
+	passenger.flight[strcspn(passenger.flight, "\n")] = 0;
+
+	printf("Enter Nationality: ");
+	fgets(passenger.nationality, sizeof(passenger.nationality), stdin);
+	passenger.nationality[strcspn(passenger.nationality, "\n")] = 0;
+
+	printf("Enter Origin City: ");
+	fgets(passenger.departure, sizeof(passenger.departure), stdin);
+	passenger.departure[strcspn(passenger.departure, "\n")] = 0;
+
+	printf("Enter Destination: ");
+	fgets(passenger.arrival, sizeof(passenger.arrival), stdin);
+	passenger.arrival[strcspn(passenger.arrival, "\n")] = 0;
+
+	printf("Enter Seat Number: ");
+	fgets(passenger.seat, sizeof(passenger.seat), stdin);
+	passenger.seat[strcspn(passenger.seat, "\n")] = 0;
 }
