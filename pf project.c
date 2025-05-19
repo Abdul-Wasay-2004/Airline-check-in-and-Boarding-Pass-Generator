@@ -17,8 +17,8 @@ void generateBoardingPass(void);
 struct passenger *getPassengerById(int id);
 
 void checkInPassenger(void){
-
 	struct passenger passenger;
+	
 	printf("\nPassenger Check-in\n");
     printf("Enter Passenger ID: ");
     scanf("%d",&passenger.id);
@@ -69,14 +69,14 @@ struct passenger *getPassengerById(int id){
 		return NULL;
 	}
 	
-	struct passenger *passenger = malloc(sizeof(passenger));
+	struct passenger *passenger = malloc(sizeof(struct passenger));
 	if(passenger==NULL){
 		printf("Memory allocation failed");
 		fclose(fp);
 		return NULL;
 	}
 
-	while(fread(passenger, sizeof(struct Passenger), 1, fp)==1){
+	while(fread(passenger, sizeof(struct passenger), 1, fp)==1){
 		if((*passenger).id==id){
 			fclose(fp);
 			return passenger;
@@ -97,13 +97,33 @@ void generateBoardingPass(void){
 	struct passenger *p = getPassengerById(id);
 	if(p!=NULL){
 		printf("\nBOARDING PASS\n");
-		printf("Passenger Id: %d\n", (*p).id;
+		printf("Passenger Id: %d\n", (*p).id);
 		printf("Name        : %s\n", (*p).name);
 		printf("Flight No   : %s\n", (*p).flight);
 		printf("Nationality : %s\n", (*p).nationality);
 		printf("Departure   : %s\n", (*p).departure);
 		printf("Arrival     : %s\n", (*p).arrival);
 		printf("Seat        : %s\n", (*p).seat);
+		
+		char bpFileName[100];
+        sprintf(bpFileName, "boarding_pass_%d.txt",(*p).id);
+        FILE *bpFile=fopen(bpFileName, "w");
+        if(bpFile==NULL){
+            perror("Error creating boarding pass file");
+        }
+		else{
+            fprintf(bpFile, "BOARDING PASS\n");
+            fprintf(bpFile, "Passenger ID: %d\n", (*p).id);
+            fprintf(bpFile, "Name        : %s\n", (*p).name);
+            fprintf(bpFile, "Flight No   : %s\n", (*p).flight);
+            fprintf(bpFile, "Nationality : %s\n", (*p).nationality);
+            fprintf(bpFile, "Origin      : %s\n", (*p).departure);
+            fprintf(bpFile, "Destination : %s\n", (*p).arrival);
+            fprintf(bpFile, "Seat        : %s\n", (*p).seat);
+            fclose(bpFile);
+            printf("Boarding pass saved as %s\n", bpFileName);
+        }
+		
 		free(p);
 	}
 	else{
