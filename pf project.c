@@ -16,13 +16,12 @@ void checkInPassenger(void);
 void generateBoardingPass(void);
 struct passenger *getPassengerById(int id);
 
-void checkInPassenger(){
+void checkInPassenger(void){
 
-	Passenger passenger;
-
-	 printf("\n--- Passenger Check-in ---\n");
+	struct passenger passenger;
+	printf("\nPassenger Check-in\n");
     printf("Enter Passenger ID: ");
-    scanf("%d", &passenger.id);
+    scanf("%d",&passenger.id);
     getchar();  
 
 	printf("Enter Passenger Name: ");
@@ -37,11 +36,11 @@ void checkInPassenger(){
 	fgets(passenger.nationality, sizeof(passenger.nationality), stdin);
 	passenger.nationality[strcspn(passenger.nationality, "\n")] = 0;
 
-	printf("Enter Origin City: ");
+	printf("Enter Departure City: ");
 	fgets(passenger.departure, sizeof(passenger.departure), stdin);
 	passenger.departure[strcspn(passenger.departure, "\n")] = 0;
 
-	printf("Enter Destination: ");
+	printf("Enter Arrival City: ");
 	fgets(passenger.arrival, sizeof(passenger.arrival), stdin);
 	passenger.arrival[strcspn(passenger.arrival, "\n")] = 0;
 
@@ -49,73 +48,68 @@ void checkInPassenger(){
 	fgets(passenger.seat, sizeof(passenger.seat), stdin);
 	passenger.seat[strcspn(passenger.seat, "\n")] = 0;
 
-	File *fp = fopen(FILE_NAME, "ab");
-	if (fp == Null) {
-		perror("unable to open file for writing");
+	FILE *fp=fopen("passengers.dat", "ab");
+	if(fp==NULL){
+		printf("Unable to open file for writing");
 		return;
 	}
-	if (fwrite(&passenger, sizeof(Passenger), 1, fp)!= 1){
-		perror("Error writing passenger recoed");
-	}else{
-		printf("passenger checked in successfully. Details saved to file.\n");
-
+	if(fwrite(&passenger, sizeof(struct passenger), 1, fp)!= 1){
+		printf("Error writing passenger record");
+	}
+	else{
+		printf("Passenger check-in successfull.\n");
 	}
 	fclose(fp);
 
 }
-Passenger* getPassengerById(int id){
-	FILE *fp =fopen(FILE_NAME, "rb");
-	if(fp == NULL){
-		perror("unable to open file for reading");
+struct passenger *getPassengerById(int id){
+	FILE *fp=fopen("passengers.dat", "rb");
+	if(fp==NULL){
+		printf("Unable to open file for reading");
 		return NULL;
 	}
-
-	Passenger *passenger = malloc(sizeof(passenger));
-	if (passenger ==NULL){
-		perror("Memory Aloocated failed");
+	
+	struct passenger *passenger = malloc(sizeof(passenger));
+	if(passenger==NULL){
+		printf("Memory allocation failed");
 		fclose(fp);
 		return NULL;
 	}
 
-	while (fread(passenger, sizeof(Passenger), 1, fp))
-	{
-		if (passenger->id ==id)
-		{
-			fclode(fp);
+	while(fread(passenger, sizeof(struct Passenger), 1, fp)==1){
+		if((*passenger).id==id){
+			fclose(fp);
 			return passenger;
-
 		}
-		
 	}
 	fclose(fp);
 	free(passenger);
 	return NULL;
 }
 
-void generateBoardingPass() {
+void generateBoardingPass(void){
 	int id;
-	printf("\n--- Boarding Pass Generator ---\n");
+	printf("\nBoarding Pass Generator\n");
 	printf("Enter Passenger ID for boarding pass: ");
 	scanf("%d", &id);
 	getchar();
 
-
-	Passenger *passengerPtr = getPassengerById(id);
-	if (passengerPtr != NULL){
-		printf("BOARDING PASS\n");
-		printf("Passenger Id: %d\n", passengerPtr->id);
-		printf("Name: %s\n", passengerPtr->name);
-		printf("Flight No: %s\n", passengerPtr->flight);
-		printf("Nationality: %s\n", passengerPtr->nationality);
-		printf("Origin: %s\n", passengerPtr->departure);
-		printf("Destination: %s\n", passengerPtr->arrival);
-		printf("Seat: %s\n",passengerPtr->seat);
-		free(passengerPtr);
-	} else {
-		printf("passenger with ID %d Not found.\n", id);
+	struct passenger *p = getPassengerById(id);
+	if(p!=NULL){
+		printf("\nBOARDING PASS\n");
+		printf("Passenger Id: %d\n", (*p).id;
+		printf("Name        : %s\n", (*p).name);
+		printf("Flight No   : %s\n", (*p).flight);
+		printf("Nationality : %s\n", (*p).nationality);
+		printf("Departure   : %s\n", (*p).departure);
+		printf("Arrival     : %s\n", (*p).arrival);
+		printf("Seat        : %s\n", (*p).seat);
+		free(p);
 	}
+	else{
+		printf("Passenger not found\n", id);
+    }
 	
-	return 1;
 }
 
 int main(){
